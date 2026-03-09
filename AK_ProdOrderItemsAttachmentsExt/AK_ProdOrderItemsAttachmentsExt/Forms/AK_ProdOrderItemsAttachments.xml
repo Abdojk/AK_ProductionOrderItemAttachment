@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxForm xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>AK_ProdOrderItemsAttachments</Name>
+  <SourceCode>
+    <Declaration><![CDATA[
+[Form]
+public class AK_ProdOrderItemsAttachments extends FormRun
+{
+}
+]]></Declaration>
+    <Methods xmlns="">
+    </Methods>
+  </SourceCode>
+  <DataSources>
+    <AxFormDataSource>
+      <Name>ProdTable</Name>
+      <Table>ProdTable</Table>
+      <Query>AK_ProdOrderItemsAttachmentsQuery</Query>
+      <AllowEdit>No</AllowEdit>
+      <AllowCreate>No</AllowCreate>
+      <AllowDelete>No</AllowDelete>
+      <InsertIfEmpty>No</InsertIfEmpty>
+    </AxFormDataSource>
+    <AxFormDataSource>
+      <Name>ProdBOM</Name>
+      <Table>ProdBOM</Table>
+      <JoinSource>ProdTable</JoinSource>
+      <AllowEdit>No</AllowEdit>
+      <AllowCreate>No</AllowCreate>
+      <AllowDelete>No</AllowDelete>
+      <InsertIfEmpty>No</InsertIfEmpty>
+    </AxFormDataSource>
+    <AxFormDataSource>
+      <Name>InventTable</Name>
+      <Table>InventTable</Table>
+      <JoinSource>ProdBOM</JoinSource>
+      <AllowEdit>No</AllowEdit>
+      <AllowCreate>No</AllowCreate>
+      <AllowDelete>No</AllowDelete>
+      <InsertIfEmpty>No</InsertIfEmpty>
+    </AxFormDataSource>
+    <AxFormDataSource>
+      <Name>InventDim</Name>
+      <Table>InventDim</Table>
+      <JoinSource>ProdBOM</JoinSource>
+      <AllowEdit>No</AllowEdit>
+      <AllowCreate>No</AllowCreate>
+      <AllowDelete>No</AllowDelete>
+      <InsertIfEmpty>No</InsertIfEmpty>
+    </AxFormDataSource>
+    <AxFormDataSource>
+      <Name>EcoResConfiguration</Name>
+      <Table>EcoResConfiguration</Table>
+      <JoinSource>InventDim</JoinSource>
+      <AllowEdit>No</AllowEdit>
+      <AllowCreate>No</AllowCreate>
+      <AllowDelete>No</AllowDelete>
+      <InsertIfEmpty>No</InsertIfEmpty>
+    </AxFormDataSource>
+  </DataSources>
+  <Design>
+    <Caption>@AK:ProdOrderItemAttachments</Caption>
+    <Pattern>SimpleList</Pattern>
+    <TitleDataSource>ProdBOM</TitleDataSource>
+    <Controls>
+      <AxFormControl xmlns="" i:type="AxFormActionPaneControl">
+        <Name>AK_MainActionPane</Name>
+        <Type>ActionPane</Type>
+        <Controls>
+          <AxFormControl xmlns="" i:type="AxFormButtonGroupControl">
+            <Name>AK_ActionsGroup</Name>
+            <Type>ButtonGroup</Type>
+            <Controls>
+              <AxFormControl xmlns="" i:type="AxFormButtonControl">
+                <Name>AK_AttachmentsButton</Name>
+                <Type>Button</Type>
+                <Text>@AK:ViewAttachments</Text>
+                <ImageLocation>Symbol</ImageLocation>
+                <NormalImage>Attach</NormalImage>
+                <ButtonDisplay>TextWithImageAbove</ButtonDisplay>
+                <Methods>
+                  <AxFormControlMethod>
+                    <Name>clicked</Name>
+                    <Source><![CDATA[
+    public void clicked()
+    {
+        super();
+        AK_ProdOrderItemsAttachmentsController::openAttachments(ProdBOM_ds);
+    }
+]]></Source>
+                  </AxFormControlMethod>
+                </Methods>
+              </AxFormControl>
+            </Controls>
+          </AxFormControl>
+        </Controls>
+      </AxFormControl>
+      <AxFormControl xmlns="" i:type="AxFormGridControl">
+        <Name>AK_MainGrid</Name>
+        <Type>Grid</Type>
+        <DataSource>ProdBOM</DataSource>
+        <MultiSelect>Yes</MultiSelect>
+        <Controls>
+          <AxFormControl xmlns="" i:type="AxFormStringControl">
+            <Name>AK_ProdId</Name>
+            <Type>String</Type>
+            <DataSource>ProdBOM</DataSource>
+            <DataField>ProdId</DataField>
+          </AxFormControl>
+          <AxFormControl xmlns="" i:type="AxFormStringControl">
+            <Name>AK_ItemId</Name>
+            <Type>String</Type>
+            <DataSource>ProdBOM</DataSource>
+            <DataField>ItemId</DataField>
+          </AxFormControl>
+          <AxFormControl xmlns="" i:type="AxFormStringControl">
+            <Name>AK_Thickness</Name>
+            <Type>String</Type>
+            <DataSource>EcoResConfiguration</DataSource>
+            <DataField>Thickness</DataField>
+          </AxFormControl>
+          <AxFormControl xmlns="" i:type="AxFormStringControl">
+            <Name>AK_Materialtype</Name>
+            <Type>String</Type>
+            <DataSource>EcoResConfiguration</DataSource>
+            <DataField>Materialtype</DataField>
+          </AxFormControl>
+          <AxFormControl xmlns="" i:type="AxFormStringControl">
+            <Name>AK_Documenttype</Name>
+            <Type>String</Type>
+            <DataSource>EcoResConfiguration</DataSource>
+            <DataField>Documenttype</DataField>
+          </AxFormControl>
+          <AxFormControl xmlns="" i:type="AxFormStringControl">
+            <Name>AK_Template</Name>
+            <Type>String</Type>
+            <DataSource>EcoResConfiguration</DataSource>
+            <DataField>Template</DataField>
+          </AxFormControl>
+        </Controls>
+      </AxFormControl>
+    </Controls>
+  </Design>
+</AxForm>

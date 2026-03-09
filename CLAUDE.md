@@ -43,12 +43,12 @@ ProdTable (Production Order)
 
 | Field Label | AOT Field Name | Notes |
 |---|---|---|
-| Thickness | `AK_Thickness` | Confirm exact name via Ctrl+Alt+F5 |
-| Material Type | `AK_MaterialType` | Confirm exact name via Ctrl+Alt+F5 |
-| Document Type | `AK_DocumentType` | Confirm exact name via Ctrl+Alt+F5 |
-| Template | `AK_Template` | Confirm exact name via Ctrl+Alt+F5 |
+| Thickness | `Thickness` | Verified via Ctrl+Alt+F5 |
+| Material Type | `Materialtype` | Verified via Ctrl+Alt+F5 |
+| Document Type | `Documenttype` | Verified via Ctrl+Alt+F5 |
+| Template | `Template` | Verified via Ctrl+Alt+F5 |
 
-> ⚠️ **OVERWATCH RULE**: Do NOT assume the exact field names above. Before writing any code that references these fields, open D365, navigate to `EcoResConfiguration`, press **Ctrl+Alt+F5**, and confirm the actual AOT field names. Update this section accordingly.
+> ✅ **VERIFIED**: Field names confirmed via Ctrl+Alt+F5 on 2026-03-09. No `AK_` prefix — fields are named `Thickness`, `Materialtype`, `Documenttype`, `Template`.
 
 ### Attachments Source
 
@@ -132,7 +132,7 @@ Build `AK_ProdOrderItemsAttachmentsQuery` with the full join chain. Validate in 
 
 ### Phase 2 — Main Form (`AK_ProdOrderItemsAttachments`)
 - Data source: `AK_ProdOrderItemsAttachmentsQuery`
-- Grid columns: ProdId, ItemId, AK_Thickness, AK_MaterialType, AK_DocumentType, AK_Template
+- Grid columns: ProdId, ItemId, Thickness, Materialtype, Documenttype, Template
 - Multi-select enabled on grid
 - Action Pane: **Attachments** button wired to `AK_ProdOrderItemsAttachmentsController::openAttachments()`
 

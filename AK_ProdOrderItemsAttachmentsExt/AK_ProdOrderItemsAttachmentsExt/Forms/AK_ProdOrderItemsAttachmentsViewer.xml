@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxForm xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>AK_ProdOrderItemsAttachmentsViewer</Name>
+  <SourceCode>
+    <Declaration><![CDATA[
+[Form]
+public class AK_ProdOrderItemsAttachmentsViewer extends FormRun
+{
+    AK_ProdOrderItemsAttachmentsTmp tmpBuffer;
+}
+]]></Declaration>
+    <Methods xmlns="">
+      <Method>
+        <Name>init</Name>
+        <Source><![CDATA[
+    public void init()
+    {
+        super();
+
+        if (element.args() && element.args().record()
+            && element.args().record().TableId == tableNum(AK_ProdOrderItemsAttachmentsTmp))
+        {
+            tmpBuffer = element.args().record();
+
+            AK_ProdOrderItemsAttachmentsTmp_ds.setTmpData(tmpBuffer);
+        }
+    }
+]]></Source>
+      </Method>
+    </Methods>
+  </SourceCode>
+  <DataSources>
+    <AxFormDataSource>
+      <Name>AK_ProdOrderItemsAttachmentsTmp</Name>
+      <Table>AK_ProdOrderItemsAttachmentsTmp</Table>
+      <AllowEdit>No</AllowEdit>
+      <AllowCreate>No</AllowCreate>
+      <AllowDelete>No</AllowDelete>
+      <InsertIfEmpty>No</InsertIfEmpty>
+    </AxFormDataSource>
+  </DataSources>
+  <Design>
+    <Caption>@AK:AttachmentViewer</Caption>
+    <Pattern>SimpleList</Pattern>
+    <TitleDataSource>AK_ProdOrderItemsAttachmentsTmp</TitleDataSource>
+    <Controls>
+      <AxFormControl xmlns="" i:type="AxFormActionPaneControl">
+        <Name>AK_ViewerActionPane</Name>
+        <Type>ActionPane</Type>
+        <Controls>
+          <AxFormControl xmlns="" i:type="AxFormButtonGroupControl">
+            <Name>AK_ViewerActionsGroup</Name>
+            <Type>ButtonGroup</Type>
+            <Controls>
+              <AxFormControl xmlns="" i:type="AxFormButtonControl">
+                <Name>AK_ViewButton</Name>
+                <Type>Button</Type>
+                <Text>@AK:ViewAttachment</Text>
+                <ImageLocation>Symbol</ImageLocation>
+                <NormalImage>View</NormalImage>
+                <ButtonDisplay>TextWithImageAbove</ButtonDisplay>
+                <Methods>
+                  <AxFormControlMethod>
+                    <Name>clicked</Name>
+                    <Source><![CDATA[
+    public void clicked()
+    {
+        super();
+
+        AK_ProdOrderItemsAttachmentsTmp tmpRecord = AK_ProdOrderItemsAttachmentsTmp_ds.cursor();
+
+        if (tmpRecord.DocuRefRecId != 0)
+        {
+            DocuRef docuRef = DocuRef::find(tmpRecord.DocuRefRecId);
+
+            if (docuRef.RecId != 0)
+            {
+                DocuAction::view(docuRef);
+            }
+        }
+    }
+]]></Source>
+                  </AxFormControlMethod>
+                </Methods>
+              </AxFormControl>
+              <AxFormControl xmlns="" i:type="AxFormButtonControl">
+                <Name>AK_CloseButton</Name>
+                <Type>Button</Type>
+                <Text>@SYS12606</Text>
+                <Methods>
+                  <AxFormControlMethod>
+                    <Name>clicked</Name>
+                    <Source><![CDATA[
+    public void clicked()
+    {
+        super();
+        element.close();
+    }
+]]></Source>
+                  </AxFormControlMethod>
+                </Methods>
+              </AxFormControl>
+            </Controls>
+          </AxFormControl>
+        </Controls>
+      </AxFormControl>
+      <AxFormControl xmlns="" i:type="AxFormGridControl">
+        <Name>AK_ViewerGrid</Name>
+        <Type>Grid</Type>
+        <DataSource>AK_ProdOrderItemsAttachmentsTmp</DataSource>
+        <MultiSelect>No</MultiSelect>
+        <Controls>
+          <AxFormControl xmlns="" i:type="AxFormStringControl">
+            <Name>AK_Viewer_ItemId</Name>
+            <Type>String</Type>
+            <DataSource>AK_ProdOrderItemsAttachmentsTmp</DataSource>
+            <DataField>ItemId</DataField>
+          </AxFormControl>
+          <AxFormControl xmlns="" i:type="AxFormStringControl">
+            <Name>AK_Viewer_ProdId</Name>
+            <Type>String</Type>
+            <DataSource>AK_ProdOrderItemsAttachmentsTmp</DataSource>
+            <DataField>ProdId</DataField>
+          </AxFormControl>
+          <AxFormControl xmlns="" i:type="AxFormStringControl">
+            <Name>AK_Viewer_DocuName</Name>
+            <Type>String</Type>
+            <DataSource>AK_ProdOrderItemsAttachmentsTmp</DataSource>
+            <DataField>DocuName</DataField>
+          </AxFormControl>
+          <AxFormControl xmlns="" i:type="AxFormStringControl">
+            <Name>AK_Viewer_DocuType</Name>
+            <Type>String</Type>
+            <DataSource>AK_ProdOrderItemsAttachmentsTmp</DataSource>
+            <DataField>DocuType</DataField>
+          </AxFormControl>
+          <AxFormControl xmlns="" i:type="AxFormStringControl">
+            <Name>AK_Viewer_FileName</Name>
+            <Type>String</Type>
+            <DataSource>AK_ProdOrderItemsAttachmentsTmp</DataSource>
+            <DataField>FileName</DataField>
+          </AxFormControl>
+          <AxFormControl xmlns="" i:type="AxFormStringControl">
+            <Name>AK_Viewer_Notes</Name>
+            <Type>String</Type>
+            <DataSource>AK_ProdOrderItemsAttachmentsTmp</DataSource>
+            <DataField>Notes</DataField>
+          </AxFormControl>
+          <AxFormControl xmlns="" i:type="AxFormDateTimeControl">
+            <Name>AK_Viewer_CreatedDateTime</Name>
+            <Type>DateTime</Type>
+            <DataSource>AK_ProdOrderItemsAttachmentsTmp</DataSource>
+            <DataField>CreatedDateTime</DataField>
+          </AxFormControl>
+        </Controls>
+      </AxFormControl>
+    </Controls>
+  </Design>
+</AxForm>

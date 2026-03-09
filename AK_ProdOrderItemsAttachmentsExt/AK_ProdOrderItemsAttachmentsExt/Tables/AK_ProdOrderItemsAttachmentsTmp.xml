@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxTable xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>AK_ProdOrderItemsAttachmentsTmp</Name>
+  <Label>@AK:ProdOrderItemAttachmentsTmp</Label>
+  <TableType>InMemory</TableType>
+  <SaveDataPerCompany>No</SaveDataPerCompany>
+  <ClusterIndex>RecIdIdx</ClusterIndex>
+  <PrimaryIndex>RecIdIdx</PrimaryIndex>
+  <Fields>
+    <AxTableField xmlns="" i:type="AxTableFieldString">
+      <Name>ItemId</Name>
+      <ExtendedDataType>ItemId</ExtendedDataType>
+      <Label>@SYS14428</Label>
+    </AxTableField>
+    <AxTableField xmlns="" i:type="AxTableFieldString">
+      <Name>ProdId</Name>
+      <ExtendedDataType>ProdId</ExtendedDataType>
+      <Label>@SYS23418</Label>
+    </AxTableField>
+    <AxTableField xmlns="" i:type="AxTableFieldString">
+      <Name>DocuName</Name>
+      <StringSize>200</StringSize>
+      <Label>@AK:DocumentName</Label>
+    </AxTableField>
+    <AxTableField xmlns="" i:type="AxTableFieldString">
+      <Name>DocuType</Name>
+      <StringSize>100</StringSize>
+      <Label>@AK:DocumentType</Label>
+    </AxTableField>
+    <AxTableField xmlns="" i:type="AxTableFieldString">
+      <Name>FileName</Name>
+      <ExtendedDataType>Filename</ExtendedDataType>
+      <Label>@AK:FileName</Label>
+    </AxTableField>
+    <AxTableField xmlns="" i:type="AxTableFieldString">
+      <Name>Notes</Name>
+      <StringSize>1000</StringSize>
+      <Label>@SYS13869</Label>
+    </AxTableField>
+    <AxTableField xmlns="" i:type="AxTableFieldUtcDateTime">
+      <Name>CreatedDateTime</Name>
+      <ExtendedDataType>CreatedDateTime</ExtendedDataType>
+      <Label>@SYS80181</Label>
+    </AxTableField>
+    <AxTableField xmlns="" i:type="AxTableFieldInt64">
+      <Name>DocuRefRecId</Name>
+      <ExtendedDataType>RefRecId</ExtendedDataType>
+      <Label>@AK:DocuRefRecId</Label>
+      <Visible>No</Visible>
+    </AxTableField>
+  </Fields>
+  <FieldGroups>
+    <AxTableFieldGroup>
+      <Name>AutoReport</Name>
+      <Fields>
+        <AxTableFieldGroupField>
+          <DataField>ItemId</DataField>
+        </AxTableFieldGroupField>
+        <AxTableFieldGroupField>
+          <DataField>ProdId</DataField>
+        </AxTableFieldGroupField>
+        <AxTableFieldGroupField>
+          <DataField>DocuName</DataField>
+        </AxTableFieldGroupField>
+        <AxTableFieldGroupField>
+          <DataField>DocuType</DataField>
+        </AxTableFieldGroupField>
+        <AxTableFieldGroupField>
+          <DataField>FileName</DataField>
+        </AxTableFieldGroupField>
+      </Fields>
+    </AxTableFieldGroup>
+  </FieldGroups>
+  <Indexes>
+    <AxTableIndex>
+      <Name>RecIdIdx</Name>
+      <Fields>
+        <AxTableIndexField>
+          <DataField>RecId</DataField>
+        </AxTableIndexField>
+      </Fields>
+    </AxTableIndex>
+  </Indexes>
+</AxTable>
