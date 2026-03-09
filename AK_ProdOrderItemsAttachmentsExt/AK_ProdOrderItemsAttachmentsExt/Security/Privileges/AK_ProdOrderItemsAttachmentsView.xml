@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxSecurityPrivilege xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>AK_ProdOrderItemsAttachmentsView</Name>
+  <Label>@AK:ProdOrderItemAttachmentsViewPrivilege</Label>
+  <Description>@AK:ProdOrderItemAttachmentsViewPrivilegeDesc</Description>
+  <EntryPoints>
+    <AxSecurityEntryPointReference>
+      <Name>AK_ProdOrderItemsAttachments</Name>
+      <ObjectType>MenuItemDisplay</ObjectType>
+      <ObjectName>AK_ProdOrderItemsAttachments</ObjectName>
+      <Grant>Read</Grant>
+    </AxSecurityEntryPointReference>
+  </EntryPoints>
+</AxSecurityPrivilege>
