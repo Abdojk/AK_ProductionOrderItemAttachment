@@ -22,58 +22,55 @@ class AK_ProdOrderItemsAttachmentsController
     /// <param name="_fds">The ProdBOM FormDataSource from the main grid.</param>
     public static void openAttachments(FormDataSource _fds)
     {
-        MultiSelectionHelper selectionHelper = MultiSelectionHelper::construct();
-        Set                  inventTableRecIds = new Set(Types::Int64);
-        ProdBOM              prodBOM;
-        InventTable          inventTable;
+        MultiSelectionHelper                selectionHelper = MultiSelectionHelper::construct();
+        AK_ProdOrderItemsAttachmentsTmp     tmpTable;
+        ProdBOM                             prodBOM;
+        InventTable                         inventTable;
+        DocuRef                             docuRef;
 
         selectionHelper.parmDatasource(_fds);
         prodBOM = selectionHelper.getFirst();
 
         while (prodBOM.RecId != 0)
         {
-            select firstonly RecId from inventTable
+            select firstonly RecId, ItemId from inventTable
                 where inventTable.ItemId == prodBOM.ItemId;
 
             if (inventTable.RecId != 0)
             {
-                inventTableRecIds.add(inventTable.RecId);
+                while select docuRef
+                    where docuRef.RefTableId   == tableNum(InventTable)
+                       && docuRef.RefRecId     == inventTable.RecId
+                       && docuRef.RefCompanyId == curExt()
+                {
+                    tmpTable.clear();
+                    tmpTable.ItemId           = prodBOM.ItemId;
+                    tmpTable.ProdId           = prodBOM.ProdId;
+                    tmpTable.DocuName         = docuRef.Name;
+                    tmpTable.DocuType         = docuRef.TypeId;
+                    tmpTable.FileName          = docuRef.FileName;
+                    tmpTable.Notes            = docuRef.Notes;
+                    tmpTable.CreatedDateTime   = docuRef.CreatedDateTime;
+                    tmpTable.DocuRefRecId      = docuRef.RecId;
+                    tmpTable.insert();
+                }
             }
 
             prodBOM = selectionHelper.getNext();
         }
 
-        if (inventTableRecIds.elements() == 0)
-        {
-            info("@AK:NoItemsSelected");
-            return;
-        }
+        select firstonly RecId from tmpTable;
 
-        // Verify at least one attachment exists before opening viewer
-        DocuRef       docuRef;
-        boolean       hasAttachments = false;
-        SetEnumerator enumerator = inventTableRecIds.getEnumerator();
-
-        while (enumerator.moveNext() && !hasAttachments)
-        {
-            select firstonly RecId from docuRef
-                where docuRef.RefTableId   == tableNum(InventTable)
-                   && docuRef.RefRecId     == enumerator.current()
-                   && docuRef.RefCompanyId == curExt();
-
-            hasAttachments = (docuRef.RecId != 0);
-        }
-
-        if (!hasAttachments)
+        if (tmpTable.RecId == 0)
         {
             info("@AK:NoAttachmentsFound");
             return;
         }
 
-        // Pass the collected RecIds to the viewer form
+        // Pass populated temp table to the viewer form
         Args args = new Args();
         args.name(formStr(AK_ProdOrderItemsAttachmentsViewer));
-        args.parmObject(inventTableRecIds);
+        args.record(tmpTable);
 
         FormRun formRun = classfactory.formRunClass(args);
         formRun.init();
