@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>AK_ProdOrderItemsAttachmentsController</Name>
+  <SourceCode>
+    <Declaration><![CDATA[
+/// <summary>
+/// Controller class for AK_ProdOrderItemsAttachments.
+/// Collects selected production BOM items and opens the attachment viewer
+/// for all DocuRef records linked to those items.
+/// </summary>
+class AK_ProdOrderItemsAttachmentsController
+{
+}
+]]></Declaration>
+    <Methods>
+      <Method>
+        <Name>openAttachments</Name>
+        <Source><![CDATA[
+    /// <summary>
+    /// Opens the attachment viewer for all items selected in the main grid.
+    /// </summary>
+    /// <param name="_fds">The ProdBOM FormDataSource from the main grid.</param>
+    public static void openAttachments(FormDataSource _fds)
+    {
+        MultiSelectionHelper selectionHelper = MultiSelectionHelper::construct();
+        Set                  inventTableRecIds = new Set(Types::Int64);
+        ProdBOM              prodBOM;
+        InventTable          inventTable;
+
+        selectionHelper.parmDatasource(_fds);
+        prodBOM = selectionHelper.getFirst();
+
+        while (prodBOM.RecId != 0)
+        {
+            select firstonly RecId from inventTable
+                where inventTable.ItemId == prodBOM.ItemId;
+
+            if (inventTable.RecId != 0)
+            {
+                inventTableRecIds.add(inventTable.RecId);
+            }
+
+            prodBOM = selectionHelper.getNext();
+        }
+
+        if (inventTableRecIds.elements() == 0)
+        {
+            info("@AK:NoItemsSelected");
+            return;
+        }
+
+        // Verify at least one attachment exists before opening viewer
+        DocuRef       docuRef;
+        boolean       hasAttachments = false;
+        SetEnumerator enumerator = inventTableRecIds.getEnumerator();
+
+        while (enumerator.moveNext() && !hasAttachments)
+        {
+            select firstonly RecId from docuRef
+                where docuRef.RefTableId   == tableNum(InventTable)
+                   && docuRef.RefRecId     == enumerator.current()
+                   && docuRef.RefCompanyId == curExt();
+
+            hasAttachments = (docuRef.RecId != 0);
+        }
+
+        if (!hasAttachments)
+        {
+            info("@AK:NoAttachmentsFound");
+            return;
+        }
+
+        // Pass the collected RecIds to the viewer form
+        Args args = new Args();
+        args.name(formStr(AK_ProdOrderItemsAttachmentsViewer));
+        args.parmObject(inventTableRecIds);
+
+        FormRun formRun = classfactory.formRunClass(args);
+        formRun.init();
+        formRun.run();
+        formRun.detach();
+    }
+]]></Source>
+      </Method>
+    </Methods>
+  </SourceCode>
+</AxClass>
